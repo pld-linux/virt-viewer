@@ -7,12 +7,12 @@
 #
 Summary:	Virtual Machine Viewer
 Name:		virt-viewer
-Version:	0.5.1
+Version:	0.5.2
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	http://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	69c82567df00afadfa2f79d3f1eb692d
+# Source0-md5:	4a8e1c4d69cff00d89a13efb26ec1050
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -22,15 +22,15 @@ BuildRequires:	intltool >= 0.35.0
 %if %{with gtk3}
 BuildRequires:	gtk+3-devel >= 3.0.0
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk-devel >= 0.9}
+%{?with_spice:BuildRequires: spice-gtk-devel >= 0.11}
 %endif
 %if %{with gtk2}
 BuildRequires:	gtk+2-devel >= 2.12.0
 BuildRequires:	gtk-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk2-devel >= 0.9}
+%{?with_spice:BuildRequires: spice-gtk2-devel >= 0.11}
 %endif
 BuildRequires:	libtool
-BuildRequires:	libvirt-devel >= 0.6.0
+BuildRequires:	libvirt-devel >= 0.9.7
 BuildRequires:	libxml2-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	sed >= 4.0
