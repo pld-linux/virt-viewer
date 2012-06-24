@@ -10,12 +10,12 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	0.5.2
+Version:	0.5.3
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	http://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	4a8e1c4d69cff00d89a13efb26ec1050
+# Source0-md5:	69a7c6d5cbd23d478396da4883567261
 Patch0:		%{name}-plugin.patch
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
@@ -142,6 +142,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/ui
 %{_datadir}/%{name}/ui/*.xml
+%{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
