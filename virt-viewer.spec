@@ -5,23 +5,24 @@
 %bcond_without	plugin	# Mozilla plugin (doesn't work with GTK+ 3)
 #
 %if %{without gtk2}
+# plugin is not ready for GTK+ 3
 %undefine	with_plugin
 %endif
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	0.5.3
+Version:	0.5.4
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	http://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	69a7c6d5cbd23d478396da4883567261
+# Source0-md5:	43c269da571e65b12421b6fc9f871e98
 Patch0:		%{name}-plugin.patch
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	gettext-devel >= 0.14.1
-BuildRequires:	glib2-devel >= 1:2.12.0
+BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libtool
 BuildRequires:	libvirt-devel >= 0.9.7
@@ -32,29 +33,29 @@ BuildRequires:	spice-protocol >= 0.10.1
 %if %{with gtk2}
 BuildRequires:	gtk+2-devel >= 2:2.18.0
 BuildRequires:	gtk-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk2-devel >= 0.11}
+%{?with_spice:BuildRequires: spice-gtk2-devel >= 0.12.101}
 %else
 BuildRequires:	gtk+3-devel >= 3.0.0
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk-devel >= 0.11}
+%{?with_spice:BuildRequires: spice-gtk-devel >= 0.12.101}
 %endif
 %if %{with plugin}
 BuildRequires:	nspr-devel >= 4.0.0
 BuildRequires:	xulrunner-devel >= 1.8
 %endif
 Requires(post,postun):	gtk-update-icon-cache
-Requires:	glib2 >= 1:2.12.0
+Requires:	glib2 >= 1:2.22.0
 Requires:	hicolor-icon-theme
 Requires:	libvirt >= 0.9.7
 Requires:	libxml2 >= 1:2.6.0
 %if %{with gtk2}
 Requires:	gtk+2 >= 2:2.18.0
 Requires:	gtk-vnc >= 0.4.3
-%{?with_spice:Requires: spice-gtk2 >= 0.11}
+%{?with_spice:Requires: spice-gtk2 >= 0.12.101}
 %else
 BuildRequires:	gtk+3 >= 3.0.0
 BuildRequires:	gtk3-vnc >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk >= 0.11}
+%{?with_spice:BuildRequires: spice-gtk >= 0.12.101}
 %endif
 Suggests:	openssh-clients
 Suggests:	gnome-keyring >= 0.4.9
