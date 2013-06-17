@@ -2,28 +2,24 @@
 # Conditional build:
 %bcond_with	gtk2	# use GTK+ 2.x instead of GTK+ 3.x
 %bcond_without	spice	# SPICE support
-%bcond_without	plugin	# Mozilla plugin (doesn't work with GTK+ 3)
+%bcond_with	ovirt	# oVirt support [requiring libgovirt, depending on rest >= 1.7.13]
 #
-%if %{without gtk2}
-# plugin is not ready for GTK+ 3
-%undefine	with_plugin
-%endif
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	0.5.5
+Version:	0.5.6
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	http://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	a5516d33a29df5d135611c4667c03f77
-Patch0:		%{name}-plugin.patch
+# Source0-md5:	b1f55ad642df062028b24d8a77619ac5
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	gettext-devel >= 0.14.1
 BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	intltool >= 0.35.0
+%{?with_ovirt:BuildRequires:	libgovirt-devel}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libvirt-devel >= 0.10.0
 BuildRequires:	libxml2-devel >= 1:2.6.0
@@ -38,10 +34,6 @@ BuildRequires:	gtk-vnc-devel >= 0.4.3
 BuildRequires:	gtk+3-devel >= 3.0.0
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
 %{?with_spice:BuildRequires: spice-gtk-devel >= 0.16.26}
-%endif
-%if %{with plugin}
-BuildRequires:	nspr-devel >= 4.0.0
-BuildRequires:	xulrunner-devel >= 1.8
 %endif
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	glib2 >= 1:2.22.0
@@ -59,6 +51,7 @@ BuildRequires:	gtk3-vnc >= 0.4.3
 %endif
 Suggests:	openssh-clients
 Suggests:	gnome-keyring >= 0.4.9
+Obsoletes:	virt-viewer-plugin
 ExclusiveArch:	%{ix86} %{x8664} ia64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -74,32 +67,8 @@ Virtual Machine Viewer udostępnia klienta graficznej konsoli do
 SPICE-GTK do zapewnienia obrazu oraz libvirt do odczytu szczegółów
 serwera VNC/SPICE.
 
-%package plugin
-Summary:	Mozilla plugin for the gtk-vnc library
-Summary(pl.UTF-8):	Wtyczka Mozilli do biblioteki gtk-vnc
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description plugin
-Virtual Machine Viewer provides a graphical
-console client for connecting to virtual machines. It uses the GTK-VNC
-or SPICE-GTK widgets to provide the display, and libvirt for looking
-up VNC/SPICE server details.
-
-This package provides a web browser plugin for Mozilla compatible
-browsers.
-
-%description plugin -l pl.UTF-8
-Virtual Machine Viewer udostępnia klienta graficznej konsoli do
-łączenia z maszynami wirtualnymi. Wykorzystuje widgety GTK-VNC lub
-SPICE-GTK do zapewnienia obrazu oraz libvirt do odczytu szczegółów
-serwera VNC/SPICE.
-
-Ten pakiet dostarcza wtyczkę dla przeglądarek WWW zgodnych z Mozillą.
-
 %prep
 %setup -q
-%patch0 -p1
 
 %{__sed} -i -e 's|PWD|shell pwd|g' icons/*/Makefile.am
 
@@ -111,9 +80,9 @@ Ten pakiet dostarcza wtyczkę dla przeglądarek WWW zgodnych z Mozillą.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	%{__enable_disable plugin} \
 	%{__with_without spice spice-gtk} \
-	--with-gtk=%{?with_gtk2:2.0}%{!?with_gtk2:3.0}
+	--with-gtk=%{?with_gtk2:2.0}%{!?with_gtk2:3.0} \
+	%{!?with_ovirt:--without-ovirt}
 
 %{__make}
 
@@ -121,8 +90,7 @@ Ten pakiet dostarcza wtyczkę dla przeglądarek WWW zgodnych z Mozillą.
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	plugindir=%{_libdir}/browser-plugins
+	DESTDIR=$RPM_BUILD_ROOT
 
 %find_lang %{name}
 
@@ -143,13 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/ui
 %{_datadir}/%{name}/ui/*.xml
+%{_datadir}/mime/packages/virt-viewer-mime.xml
 %{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
-
-%if %{with plugin}
-%files plugin
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/browser-plugins/virt-viewer-plugin.so
-%endif
