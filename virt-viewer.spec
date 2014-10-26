@@ -2,17 +2,17 @@
 # Conditional build:
 %bcond_with	gtk2	# use GTK+ 2.x instead of GTK+ 3.x
 %bcond_without	spice	# SPICE support
-%bcond_with	ovirt	# oVirt support [requiring libgovirt, depending on rest >= 1.7.13]
+%bcond_without	ovirt	# oVirt support
 #
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	0.6.0
+Version:	1.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://fedorahosted.org/released/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	a3d7dd877105117e36185378ee1849ee
+# Source0-md5:	f8c56c0e060f332efdbbc9ba0cd8c250
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -96,6 +96,21 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# just a copy of af,cs,fa,hr,ms (empty anyway)
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/af_ZA
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/cs_CZ
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/fa_IR
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/hr_HR
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ms_MY
+# empty version of es,eu,it,ja,ru,ta,uk
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/es_ES
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/eu_ES
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/it_IT
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ja_JP
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ru_RU
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ta_IN
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uk_UA
+
 %find_lang %{name}
 
 %clean
@@ -120,5 +135,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mime/packages/virt-viewer-mime.xml
 %{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
+%{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.svg
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
