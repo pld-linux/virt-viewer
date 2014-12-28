@@ -16,7 +16,7 @@ Source0:	https://fedorahosted.org/released/virt-viewer/%{name}-%{version}.tar.gz
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-BuildRequires:	gettext-devel >= 0.14.1
+BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	intltool >= 0.35.0
 %{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.0}
