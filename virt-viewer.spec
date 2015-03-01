@@ -7,19 +7,19 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	1.0
+Version:	2.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://fedorahosted.org/released/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	f8c56c0e060f332efdbbc9ba0cd8c250
+# Source0-md5:	4b1e9a2029e0dfff741e17bb915f75ec
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	intltool >= 0.35.0
-%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.0}
+%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.2}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libvirt-devel >= 0.10.0
 BuildRequires:	libxml2-devel >= 1:2.6.0
@@ -51,7 +51,7 @@ Requires:	gtk+3 >= 3.0.0
 Requires:	gtk3-vnc >= 0.4.3
 %{?with_spice:Requires: spice-gtk >= 0.22}
 %endif
-%{?with_ovirt:Requires:	libgovirt >= 0.3.0}
+%{?with_ovirt:Requires:	libgovirt >= 0.3.2}
 Suggests:	openssh-clients
 Suggests:	gnome-keyring >= 0.4.9
 Obsoletes:	virt-viewer-plugin
@@ -96,20 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# just a copy of af,cs,fa,hr,ms (empty anyway)
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/af_ZA
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/cs_CZ
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/fa_IR
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/hr_HR
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ms_MY
-# empty version of es,eu,it,ja,ru,ta,uk
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/es_ES
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/eu_ES
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/it_IT
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ja_JP
+# empty version of ru,zh_CN,zh_TW
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ru_RU
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ta_IN
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/uk_UA
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/zh_CN.GB2312
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/zh_TW.Big5
 
 %find_lang %{name}
 
@@ -135,6 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mime/packages/virt-viewer-mime.xml
 %{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
+%{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.png
 %{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.svg
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
