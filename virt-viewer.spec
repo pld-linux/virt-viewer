@@ -54,6 +54,8 @@ Requires:	gtk3-vnc >= 0.4.3
 %{?with_ovirt:Requires:	libgovirt >= 0.3.2}
 Suggests:	openssh-clients
 Suggests:	gnome-keyring >= 0.4.9
+# let it obsolete withdrawn spice client from spice-space package
+%{?with_spice:Obsoletes:	spice-client}
 Obsoletes:	virt-viewer-plugin
 ExclusiveArch:	%{ix86} %{x8664} ia64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
