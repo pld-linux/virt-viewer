@@ -8,7 +8,7 @@ Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
 Version:	2.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://fedorahosted.org/released/virt-viewer/%{name}-%{version}.tar.gz
