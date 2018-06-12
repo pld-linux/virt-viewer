@@ -1,59 +1,49 @@
 #
 # Conditional build:
-%bcond_with	gtk2	# use GTK+ 2.x instead of GTK+ 3.x
 %bcond_without	spice	# SPICE support
 %bcond_without	ovirt	# oVirt support
 #
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	2.0
-Release:	2
+Version:	6.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
-Source0:	https://fedorahosted.org/released/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	4b1e9a2029e0dfff741e17bb915f75ec
+Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
+# Source0-md5:	4ed1a71013fa32326861b4710e231ab4
+Patch0:		remove-spice-controller.patch
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	gettext-tools >= 0.14.1
-BuildRequires:	glib2-devel >= 1:2.22.0
+BuildRequires:	glib2-devel >= 1:2.38.0
+BuildRequires:	gtk+3-devel >= 3.12
+BuildRequires:	gtk3-vnc-devel >= 0.4.3
 BuildRequires:	intltool >= 0.35.0
 %{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.2}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libvirt-devel >= 0.10.0
+BuildRequires:	libvirt-glib-devel >= 0.1.8
 BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-tools-pod
 BuildRequires:	rpmbuild(macros) >= 1.596
 BuildRequires:	sed >= 4.0
-BuildRequires:	spice-protocol >= 0.10.1
-%if %{with gtk2}
-BuildRequires:	gtk+2-devel >= 2:2.18.0
-BuildRequires:	gtk-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk2-devel >= 0.22}
-%else
-BuildRequires:	gtk+3-devel >= 3.0.0
-BuildRequires:	gtk3-vnc-devel >= 0.4.3
-%{?with_spice:BuildRequires: spice-gtk-devel >= 0.22}
-%endif
+%{?with_spice:BuildRequires:	spice-gtk-devel >= 0.33}
+BuildRequires:	spice-protocol >= 0.12.7
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
-Requires:	glib2 >= 1:2.22.0
-Requires:	hicolor-icon-theme
-Requires:	libvirt >= 0.10.0
-Requires:	libxml2 >= 1:2.6.0
-%if %{with gtk2}
-Requires:	gtk+2 >= 2:2.18.0
-Requires:	gtk-vnc >= 0.4.3
-%{?with_spice:Requires: spice-gtk2 >= 0.22}
-%else
-Requires:	gtk+3 >= 3.0.0
+Requires:	glib2 >= 1:2.38.0
+Requires:	gtk+3 >= 3.12
 Requires:	gtk3-vnc >= 0.4.3
-%{?with_spice:Requires: spice-gtk >= 0.22}
-%endif
+Requires:	hicolor-icon-theme
 %{?with_ovirt:Requires:	libgovirt >= 0.3.2}
-Suggests:	openssh-clients
+Requires:	libvirt >= 0.10.0
+Requires:	libvirt-glib >= 0.1.8
+Requires:	libxml2 >= 1:2.6.0
+%{?with_spice:Requires:	spice-gtk >= 0.33}
 Suggests:	gnome-keyring >= 0.4.9
+Suggests:	openssh-clients
 # let it obsolete withdrawn spice client from spice-space package
 %{?with_spice:Obsoletes:	spice-client}
 Obsoletes:	virt-viewer-plugin
@@ -74,6 +64,7 @@ serwera VNC/SPICE.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %{__sed} -i -e 's|PWD|shell pwd|g' icons/*/Makefile.am
 
@@ -87,7 +78,6 @@ serwera VNC/SPICE.
 	--disable-silent-rules \
 	--disable-update-mimedb \
 	%{__with_without spice spice-gtk} \
-	--with-gtk=%{?with_gtk2:2.0}%{!?with_gtk2:3.0} \
 	%{!?with_ovirt:--without-ovirt}
 
 %{__make}
@@ -97,11 +87,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-
-# empty version of ru,zh_CN,zh_TW
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ru_RU
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/zh_CN.GB2312
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/zh_TW.Big5
 
 %find_lang %{name}
 
@@ -118,12 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README
+%doc AUTHORS ChangeLog NEWS README.md
 %attr(755,root,root) %{_bindir}/virt-viewer
 %attr(755,root,root) %{_bindir}/remote-viewer
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/ui
-%{_datadir}/%{name}/ui/*.xml
+%{_datadir}/appdata/remote-viewer.appdata.xml
 %{_datadir}/mime/packages/virt-viewer-mime.xml
 %{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
