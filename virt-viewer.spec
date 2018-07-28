@@ -6,13 +6,12 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	6.0
+Version:	7.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	4ed1a71013fa32326861b4710e231ab4
-Patch0:		remove-spice-controller.patch
+# Source0-md5:	64c9c4045a7a941a0be4050fc33fc6f5
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -29,7 +28,7 @@ BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-tools-pod
 BuildRequires:	rpmbuild(macros) >= 1.596
 BuildRequires:	sed >= 4.0
-%{?with_spice:BuildRequires:	spice-gtk-devel >= 0.33}
+%{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
 BuildRequires:	spice-protocol >= 0.12.7
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
@@ -41,7 +40,7 @@ Requires:	hicolor-icon-theme
 Requires:	libvirt >= 0.10.0
 Requires:	libvirt-glib >= 0.1.8
 Requires:	libxml2 >= 1:2.6.0
-%{?with_spice:Requires:	spice-gtk >= 0.33}
+%{?with_spice:Requires:	spice-gtk >= 0.35}
 Suggests:	gnome-keyring >= 0.4.9
 Suggests:	openssh-clients
 # let it obsolete withdrawn spice client from spice-space package
@@ -64,7 +63,6 @@ serwera VNC/SPICE.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %{__sed} -i -e 's|PWD|shell pwd|g' icons/*/Makefile.am
 
