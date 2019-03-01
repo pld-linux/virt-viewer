@@ -6,40 +6,45 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	7.0
+Version:	8.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	64c9c4045a7a941a0be4050fc33fc6f5
+# Source0-md5:	8e31e9797aea982d0c70d360cbc328e7
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	gettext-tools >= 0.14.1
-BuildRequires:	glib2-devel >= 1:2.38.0
+BuildRequires:	glib2-devel >= 1:2.40.0
 BuildRequires:	gtk+3-devel >= 3.12
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
+BuildRequires:	icoutils
 BuildRequires:	intltool >= 0.35.0
-%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.2}
+%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.3}
 BuildRequires:	libtool >= 2:2
-BuildRequires:	libvirt-devel >= 0.10.0
+BuildRequires:	libvirt-devel >= 1.2.8
 BuildRequires:	libvirt-glib-devel >= 0.1.8
 BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-tools-pod
+BuildRequires:	pkgconfig
+%{?with_ovirt:BuildRequires:	rest-devel >= 0.8}
 BuildRequires:	rpmbuild(macros) >= 1.596
 BuildRequires:	sed >= 4.0
 %{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
 BuildRequires:	spice-protocol >= 0.12.7
+BuildRequires:	vte-devel
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
-Requires:	glib2 >= 1:2.38.0
+Requires:	glib2 >= 1:2.40.0
 Requires:	gtk+3 >= 3.12
 Requires:	gtk3-vnc >= 0.4.3
 Requires:	hicolor-icon-theme
-%{?with_ovirt:Requires:	libgovirt >= 0.3.2}
-Requires:	libvirt >= 0.10.0
+%{?with_ovirt:Requires:	libgovirt >= 0.3.3}
+Requires:	libvirt >= 1.2.8
 Requires:	libvirt-glib >= 0.1.8
 Requires:	libxml2 >= 1:2.6.0
+%{?with_ovirt:Requires:	rest >= 0.8}
 %{?with_spice:Requires:	spice-gtk >= 0.35}
 Suggests:	gnome-keyring >= 0.4.9
 Suggests:	openssh-clients
