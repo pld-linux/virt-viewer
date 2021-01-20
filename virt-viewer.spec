@@ -6,12 +6,12 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	8.0
+Version:	9.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	8e31e9797aea982d0c70d360cbc328e7
+# Source0-md5:	f90413f321b697405369c6f963ea7a5e
 URL:		http://virt-manager.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -66,6 +66,22 @@ Virtual Machine Viewer udostępnia klienta graficznej konsoli do
 SPICE-GTK do zapewnienia obrazu oraz libvirt do odczytu szczegółów
 serwera VNC/SPICE.
 
+%package -n bash-completion-virt-viewer
+Summary:	bash-completion for virt-viewer command
+Summary(pl.UTF-8):	bashowe uzupełnianie parametrów polecenia virt-viewer
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+Requires:	bash-completion >= 2.0
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description -n bash-completion-virt-viewer
+Bash-completion for virt-viewer command.
+
+%description -n bash-completion-virt-viewer -l pl.UTF-8
+Bashowe uzupełnianie parametrów polecenia virt-viewer.
+
 %prep
 %setup -q
 
@@ -93,8 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %find_lang %{name}
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+#%clean
+#rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_icon_cache hicolor
@@ -117,3 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.svg
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
+
+%files -n bash-completion-virt-viewer
+%defattr(644,root,root,755)
+%{bash_compdir}/virt-viewer
