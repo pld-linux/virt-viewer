@@ -6,30 +6,32 @@
 Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
-Version:	9.0
+Version:	11.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Networking
-Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.gz
-# Source0-md5:	f90413f321b697405369c6f963ea7a5e
+Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.xz
+# Source0-md5:	06b80228aaf10e614aeb8ffa4814b03a
 URL:		http://virt-manager.org/
-BuildRequires:	autoconf >= 2.50
-BuildRequires:	automake
+BuildRequires:	bash-completion-devel
+BuildRequires:	cmake
 BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	glib2-devel >= 1:2.40.0
 BuildRequires:	gtk+3-devel >= 3.12
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
 BuildRequires:	icoutils
 BuildRequires:	intltool >= 0.35.0
-%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.3}
+%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.7}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libvirt-devel >= 1.2.8
 BuildRequires:	libvirt-glib-devel >= 0.1.8
 BuildRequires:	libxml2-devel >= 1:2.6.0
+BuildRequires:	meson
+BuildRequires:	ninja
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 %{?with_ovirt:BuildRequires:	rest-devel >= 0.8}
-BuildRequires:	rpmbuild(macros) >= 1.596
+BuildRequires:	rpmbuild(macros) >= 2.000
 BuildRequires:	sed >= 4.0
 %{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
 BuildRequires:	spice-protocol >= 0.12.7
@@ -83,32 +85,25 @@ Bashowe uzupełnianie parametrów polecenia virt-viewer.
 %prep
 %setup -q
 
-%{__sed} -i -e 's|PWD|shell pwd|g' icons/*/Makefile.am
-
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	--disable-update-mimedb \
-	%{__with_without spice spice-gtk} \
-	%{!?with_ovirt:--without-ovirt}
+%meson \
+	%{!?with_ovirt:-Dovirt=disabled} \
+	%{?with_ovirt:-Dovirt=enabled} \
+	%{!?with_spice:-Dspice=disabled} \
+	%{?with_spice:-Dspice=enabled} \
+	build
 
-%{__make}
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
 %find_lang %{name}
 
-#%clean
-#rm -rf $RPM_BUILD_ROOT
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_icon_cache hicolor
@@ -120,15 +115,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README.md
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_bindir}/virt-viewer
 %attr(755,root,root) %{_bindir}/remote-viewer
-%{_datadir}/appdata/remote-viewer.appdata.xml
+%{_datadir}/metainfo/remote-viewer.appdata.xml
 %{_datadir}/mime/packages/virt-viewer-mime.xml
 %{_desktopdir}/remote-viewer.desktop
 %{_iconsdir}/hicolor/*/apps/virt-viewer.png
-%{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.png
-%{_iconsdir}/hicolor/24x24/devices/virt-viewer-usb.svg
+%{_iconsdir}/hicolor/scalable/apps/virt-viewer.svg
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
 
