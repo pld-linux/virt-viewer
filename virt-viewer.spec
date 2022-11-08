@@ -53,7 +53,6 @@ Suggests:	openssh-clients
 # let it obsolete withdrawn spice client from spice-space package
 %{?with_spice:Obsoletes:	spice-client}
 Obsoletes:	virt-viewer-plugin
-ExclusiveArch:	%{ix86} %{x8664} ia64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
