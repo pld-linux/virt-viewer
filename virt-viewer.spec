@@ -32,6 +32,7 @@ BuildRequires:	ninja
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 %{?with_ovirt:BuildRequires:	rest-devel >= 0.8}
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.000
 BuildRequires:	sed >= 4.0
 %{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
