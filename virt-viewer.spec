@@ -40,6 +40,7 @@ BuildRequires:	spice-protocol >= 0.12.7
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vte-devel
 BuildRequires:	xz
+Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
 Requires:	glib2 >= 1:2.40.0
@@ -110,10 +111,12 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %post
+%update_desktop_database_post
 %update_icon_cache hicolor
 %update_mime_database
 
 %postun
+%update_desktop_database_postun
 %update_icon_cache hicolor
 %update_mime_database
 
