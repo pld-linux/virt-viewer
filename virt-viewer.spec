@@ -37,7 +37,9 @@ BuildRequires:	rpmbuild(macros) >= 2.000
 BuildRequires:	sed >= 4.0
 %{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
 BuildRequires:	spice-protocol >= 0.12.7
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	vte-devel
+BuildRequires:	xz
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
 Requires:	glib2 >= 1:2.40.0
