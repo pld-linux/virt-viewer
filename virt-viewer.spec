@@ -12,6 +12,7 @@ License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.xz
 # Source0-md5:	06b80228aaf10e614aeb8ffa4814b03a
+Patch0:		meson.patch
 URL:		http://virt-manager.org/
 BuildRequires:	bash-completion-devel
 BuildRequires:	cmake
@@ -83,6 +84,7 @@ Bashowe uzupełnianie parametrów polecenia virt-viewer.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %meson \
