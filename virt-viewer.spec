@@ -7,57 +7,57 @@ Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
 Version:	11.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications/Networking
-Source0:	https://virt-manager.org/download/sources/virt-viewer/%{name}-%{version}.tar.xz
+Source0:	https://releases.pagure.org/virt-viewer/%{name}-%{version}.tar.xz
 # Source0-md5:	06b80228aaf10e614aeb8ffa4814b03a
 Patch0:		meson.patch
-URL:		http://virt-manager.org/
-BuildRequires:	bash-completion-devel
-BuildRequires:	cmake
+Patch1:		%{name}-rest1.patch
+URL:		https://virt-manager.org/
+BuildRequires:	bash-completion-devel >= 1:2.0
 BuildRequires:	gettext-tools >= 0.14.1
-BuildRequires:	glib2-devel >= 1:2.40.0
-BuildRequires:	gtk+3-devel >= 3.12
+BuildRequires:	glib2-devel >= 1:2.48
+BuildRequires:	gtk+3-devel >= 3.18
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
 BuildRequires:	icoutils
-BuildRequires:	intltool >= 0.35.0
-%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.7}
-BuildRequires:	libtool >= 2:2
+%{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.9}
 BuildRequires:	libvirt-devel >= 1.2.8
 BuildRequires:	libvirt-glib-devel >= 0.1.8
 BuildRequires:	libxml2-devel >= 1:2.6.0
-BuildRequires:	meson
-BuildRequires:	ninja
+BuildRequires:	meson >= 0.54.0
+BuildRequires:	ninja >= 1.5
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
-%{?with_ovirt:BuildRequires:	rest-devel >= 0.8}
+BuildRequires:	python3 >= 1:3
+%{?with_ovirt:BuildRequires:	rest1-devel >= 0.9.1-2}
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.000
 BuildRequires:	sed >= 4.0
-%{?with_spice:BuildRequires:	spice-gtk-devel >= 0.35}
+%{?with_spice:BuildRequires:	spice-gtk-devel >= 0.41}
 BuildRequires:	spice-protocol >= 0.12.7
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	vte-devel
+BuildRequires:	vte-devel >= 0.46.0
 BuildRequires:	xz
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
-Requires:	glib2 >= 1:2.40.0
-Requires:	gtk+3 >= 3.12
+Requires:	glib2 >= 1:2.48
+Requires:	gtk+3 >= 3.18
 Requires:	gtk3-vnc >= 0.4.3
 Requires:	hicolor-icon-theme
-%{?with_ovirt:Requires:	libgovirt >= 0.3.3}
+%{?with_ovirt:Requires:	libgovirt >= 0.3.9}
 Requires:	libvirt >= 1.2.8
 Requires:	libvirt-glib >= 0.1.8
 Requires:	libxml2 >= 1:2.6.0
-%{?with_ovirt:Requires:	rest >= 0.8}
-%{?with_spice:Requires:	spice-gtk >= 0.35}
+%{?with_ovirt:Requires:	rest1 >= 0.9.1-2}
+%{?with_spice:Requires:	spice-gtk >= 0.41}
+Requires:	vte >= 0.46.0
 Suggests:	gnome-keyring >= 0.4.9
 Suggests:	openssh-clients
 # let it obsolete withdrawn spice client from spice-space package
-%{?with_spice:Obsoletes:	spice-client}
-Obsoletes:	virt-viewer-plugin
+%{?with_spice:Obsoletes:	spice-client < 0.12.6}
+Obsoletes:	virt-viewer-plugin < 0.5.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -89,14 +89,14 @@ Bashowe uzupełnianie parametrów polecenia virt-viewer.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
-%meson \
+%meson build \
 	%{!?with_ovirt:-Dovirt=disabled} \
 	%{?with_ovirt:-Dovirt=enabled} \
 	%{!?with_spice:-Dspice=disabled} \
-	%{?with_spice:-Dspice=enabled} \
-	build
+	%{?with_spice:-Dspice=enabled}
 
 %ninja_build -C build
 

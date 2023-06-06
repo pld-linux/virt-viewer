@@ -1,0 +1,11 @@
+--- virt-viewer-11.0/meson.build.orig	2021-11-18 20:24:49.127912000 +0100
++++ virt-viewer-11.0/meson.build	2023-06-06 20:06:37.589858104 +0200
+@@ -436,7 +436,7 @@ if spice_gtk_dep.found()
+ endif
+ 
+ govirt_dep = dependency('govirt-1.0', version: govirt_min_version, required: get_option('ovirt'))
+-rest_dep = dependency('rest-0.7', version: rest_min_version, required: get_option('ovirt'))
++rest_dep = dependency('rest-1.0', version: rest_min_version, required: get_option('ovirt'))
+ if get_option('ovirt').auto()
+   if govirt_dep.found() and not rest_dep.found()
+     govirt_dep = dependency('', required: false)
