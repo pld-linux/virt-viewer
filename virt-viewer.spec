@@ -92,18 +92,18 @@ Bashowe uzupełnianie parametrów polecenia virt-viewer.
 %patch -P1 -p1
 
 %build
-%meson build \
+%meson \
 	%{!?with_ovirt:-Dovirt=disabled} \
 	%{?with_ovirt:-Dovirt=enabled} \
 	%{!?with_spice:-Dspice=disabled} \
 	%{?with_spice:-Dspice=enabled}
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %find_lang %{name}
 
