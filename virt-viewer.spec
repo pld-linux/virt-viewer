@@ -32,7 +32,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3
 %{?with_ovirt:BuildRequires:	rest1-devel >= 0.9.1-2}
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 2.000
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sed >= 4.0
 %{?with_spice:BuildRequires:	spice-gtk-devel >= 0.41}
 BuildRequires:	spice-protocol >= 0.12.7
