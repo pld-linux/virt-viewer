@@ -7,7 +7,7 @@ Summary:	Virtual Machine Viewer
 Summary(pl.UTF-8):	Przeglądarka maszyny wirtualnej
 Name:		virt-viewer
 Version:	11.0
-Release:	4
+Release:	5
 License:	GPL v2+
 Group:		X11/Applications/Networking
 Source0:	https://releases.pagure.org/virt-viewer/%{name}-%{version}.tar.xz
@@ -22,6 +22,7 @@ BuildRequires:	gtk+3-devel >= 3.18
 BuildRequires:	gtk3-vnc-devel >= 0.4.3
 BuildRequires:	icoutils
 %{?with_ovirt:BuildRequires:	libgovirt-devel >= 0.3.9}
+%{?with_ovirt:BuildRequires:	librest-devel >= 0.9.1-2}
 BuildRequires:	libvirt-devel >= 1.2.8
 BuildRequires:	libvirt-glib-devel >= 0.1.8
 BuildRequires:	libxml2-devel >= 1:2.6.0
@@ -30,7 +31,6 @@ BuildRequires:	ninja >= 1.5
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 BuildRequires:	python3 >= 1:3
-%{?with_ovirt:BuildRequires:	rest1-devel >= 0.9.1-2}
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sed >= 4.0
@@ -47,10 +47,10 @@ Requires:	gtk+3 >= 3.18
 Requires:	gtk3-vnc >= 0.4.3
 Requires:	hicolor-icon-theme
 %{?with_ovirt:Requires:	libgovirt >= 0.3.9}
+%{?with_ovirt:Requires:	librest >= 0.9.1-2}
 Requires:	libvirt >= 1.2.8
 Requires:	libvirt-glib >= 0.1.8
 Requires:	libxml2 >= 1:2.6.0
-%{?with_ovirt:Requires:	rest1 >= 0.9.1-2}
 %{?with_spice:Requires:	spice-gtk >= 0.41}
 Requires:	vte >= 0.46.0
 Suggests:	gnome-keyring >= 0.4.9
